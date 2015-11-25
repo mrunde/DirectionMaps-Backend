@@ -1,5 +1,3 @@
-package tryouts;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,54 +20,58 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiLineString;
 
 public class Database {
-	
-	public static Map<String,Object> getConnectionParams(){
-		Map<String,Object> params = new HashMap<String, Object>();
+
+	private Map<String, Object> params;
+
+	public Database() {
+		this.params = new HashMap<String, Object>();
 		params.put("dbtype", "postgis");
 		params.put("host", "localhost");
 		params.put("user", "postgres");
-		params.put("passwd", "admin");
+		params.put("passwd", "0acc1020,");
 		params.put("schema", "public");
-		params.put("database", "postgres");
+		params.put("database", "postgis");
 		params.put("port", new Integer(5432));
-		return params;
 	}
-	
-	
-	public static ArrayList<MultiLineString> queryRoads(String type) throws CQLException{
-		ArrayList<MultiLineString> lines = new ArrayList<MultiLineString>();
-		try{			
-			DataStore dataStore = DataStoreFinder.getDataStore(getConnectionParams());
-			String[] types = dataStore.getTypeNames();
-//			System.out.println(Arrays.asList(types));
-			
+
+	public ArrayList<MultiLineString> queryRoads(String type) throws CQLException {
+		
+		ArrayList<MultiLineString> roads = new ArrayList<MultiLineString>();
+		
+		try {
+			DataStore dataStore = DataStoreFinder.getDataStore(params);
+			//String[] types = dataStore.getTypeNames();
+			//System.out.println(types.toString());
+
 			FeatureSource fs = dataStore.getFeatureSource("roads");
-//			System.out.println("Count: " + fs.getCount(Query.ALL));
-			
+			// System.out.println("Count: " + fs.getCount(Query.ALL));
+
 			FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-			ReferencedEnvelope bbox = new ReferencedEnvelope(7.526751,7.722273,51.909702,52.014736, fs.getSchema().getGeometryDescriptor().getCoordinateReferenceSystem());
+			ReferencedEnvelope bbox = new ReferencedEnvelope(7.526751, 7.722273, 51.909702, 52.014736,
+					fs.getSchema().getGeometryDescriptor().getCoordinateReferenceSystem());
+			
 			Filter filter1 = ff.like(ff.property("type"), type);
 			Filter filter2 = ff.bbox(ff.property("geom"), bbox);
 			Filter filter = ff.and(filter1, filter2);
-			
-			
-			FeatureCollection<SimpleFeatureType, Feature> roads = fs.getFeatures(filter);
 
-			FeatureIterator<Feature> it = roads.features();
-			
-			while(it.hasNext()){
-				Feature feature = it.next(); //simplefeatureimpl
+			FeatureCollection<SimpleFeatureType, Feature> roadFeatures = fs.getFeatures(filter);
 
-				Geometry g = (Geometry)feature.getDefaultGeometryProperty().getValue();
+			FeatureIterator<Feature> it = roadFeatures.features();
+
+			while (it.hasNext()) {
+				Feature feature = it.next(); // simplefeatureimpl
+
+				Geometry g = (Geometry) feature.getDefaultGeometryProperty().getValue();
 				MultiLineString mls = (MultiLineString) g;
-				lines.add(mls);
+				roads.add(mls);
 			}
-			it.close();
 			
+			it.close();
 			dataStore.dispose();
-		} catch(IOException ex){
+		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
-		return lines;
+
+		return roads;
 	}
 }

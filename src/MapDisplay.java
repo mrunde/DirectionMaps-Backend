@@ -1,7 +1,4 @@
-package tryouts;
-
 import java.io.File;
-
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureSource;
