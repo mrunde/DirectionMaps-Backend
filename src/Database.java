@@ -50,7 +50,7 @@ public class Database {
 			ReferencedEnvelope bbox = new ReferencedEnvelope(7.526751, 7.722273, 51.909702, 52.014736,
 					fs.getSchema().getGeometryDescriptor().getCoordinateReferenceSystem());
 			
-			Filter filter1 = ff.like(ff.property("type"), type);
+			Filter filter1 = ff.like(ff.property("type"), type); //type e.g. motorways
 			Filter filter2 = ff.bbox(ff.property("geom"), bbox);
 			Filter filter = ff.and(filter1, filter2);
 
@@ -60,7 +60,6 @@ public class Database {
 
 			while (it.hasNext()) {
 				Feature feature = it.next(); // simplefeatureimpl
-
 				Geometry g = (Geometry) feature.getDefaultGeometryProperty().getValue();
 				MultiLineString mls = (MultiLineString) g;
 				roads.add(mls);

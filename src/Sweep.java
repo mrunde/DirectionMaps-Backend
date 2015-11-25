@@ -11,8 +11,8 @@ import com.vividsolutions.jts.geom.MultiLineString;
 public class Sweep {
 
 	// container for the features to display in final shapefile
-	ArrayList<MultiLineString> roads = new ArrayList<MultiLineString>();
-	
+	private ArrayList<MultiLineString> roads = new ArrayList<MultiLineString>();
+
 	// the different road features as requested from the database
 	private ArrayList<MultiLineString> motorways = new ArrayList<MultiLineString>();
 	private ArrayList<MultiLineString> primary = new ArrayList<MultiLineString>();
@@ -21,26 +21,26 @@ public class Sweep {
 	private ArrayList<MultiLineString> residential = new ArrayList<MultiLineString>();
 	private ArrayList<MultiLineString> service = new ArrayList<MultiLineString>();
 
-	public Coordinate source = new Coordinate(7.5956, 51.9695);	//ifgi
-//	public Coordinate source = new Coordinate(7.61, 51.96);	//castle
-//	public Coordinate source = new Coordinate(7.62, 51.96);	//cathedral
+	//public Coordinate source = new Coordinate(7.5956, 51.9695); // ifgi
+	public Coordinate source = new Coordinate(7.61, 51.96); //castle
+	//public Coordinate source = new Coordinate(7.62, 51.96); //cathedral
 
 	// used to create multilinesegments
 	private GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
 	Utils util;
 	Database db;
-	
+
 	public Sweep() throws SchemaException {
 		this.util = new Utils();
 		this.db = new Database();
-		
+
 		queryData();
 
 		runSweep();
-		
-		util.writeToShapefile(roads);	
+
+		util.writeToShapefile(roads);
 	}
-	
+
 	// query data from database
 	private void queryData() {
 		try {
@@ -55,11 +55,8 @@ public class Sweep {
 		}
 	}
 
+	private void runSweep() {
 
-	
-	
-	private void runSweep(){		
-		
 		// different road layers from osm, hierarchy is important here
 		ArrayList<ArrayList<MultiLineString>> roadLayers = new ArrayList<ArrayList<MultiLineString>>();
 		roadLayers.add(motorways);
@@ -68,48 +65,58 @@ public class Sweep {
 		roadLayers.add(tertiary);
 		roadLayers.add(residential);
 		roadLayers.add(service);
-		
+
 		ArrayList<MultiLineString> newLines = new ArrayList<MultiLineString>();
 		HashSet<MultiLineString> toRemove = new HashSet<MultiLineString>();
 		roads.clear();
-		
+
 		// first, add all roads to the result
-		for(int i = 0; i < roadLayers.size(); i++){
+		for (int i = 0; i < roadLayers.size(); i++) {
 			roads.addAll(roadLayers.get(i));
 		}
 
-		for(int i = 1; i < roadLayers.size(); i++){
+		for (int i = 1; i < roadLayers.size(); i++) {
 			newLines.clear();
-			// calculate "sight lines" (lines from destination to each line in collection)
-			for(MultiLineString mls : roadLayers.get(i)){
-				Coordinate mlsCenter = mls.getCoordinates()[(int)(mls.getCoordinates().length/2)];
+			// calculate "sight lines" (lines from destination to each line in
+			// collection)
+			ArrayList<MultiLineString> layer = roadLayers.get(i);
+			for (MultiLineString mls : layer) {
+				// System.out.println(mls.toString());
+				Coordinate mlsCenter = mls.getCoordinates()[(int) (mls.getCoordinates().length / 2)];
 				Coordinate[] coArr = { source, mlsCenter };
 				LineString ls = geometryFactory.createLineString(coArr);
-				
+
 				newLines.add(geometryFactory.createMultiLineString(new LineString[] { ls }));
-			}			
-			
+			}
+
 			System.out.println("Calculated Sightlines for Layer " + i + "! Size: " + newLines.size());
-			
-			
+
 			// for each sight line...
-			for(int n = 0; n < newLines.size(); n++){
+			for (int n = 0; n < newLines.size(); n++) {
 				// ...iterate through layers of higher hierarchy...
-				for(int x = i; x > 0; x--){	
+				hierarchyLoop: for (int x = 0; x <= i; x++) {
 					// ...and check each line segment for intersections
-					for(MultiLineString mlsM : roadLayers.get(x-1)){
-						if(newLines.get(n).intersects(mlsM)){
+					// also against its own hierarchy type
+					for (MultiLineString mlsM : roadLayers.get(x)) {
+						// check intersection, ignore case where sight line corresponds to a certain street segment
+						if (newLines.get(n).intersects(mlsM) && !roadLayers.get(i).get(n).equals(mlsM)) {
+							// roads.remove(roadLayers.get(i).get(n));
 							toRemove.add(roadLayers.get(i).get(n));
+							// break for performance
+							// once roadLayers.get(i).get(n) gets removed
+							// there's no need to continue
+							break hierarchyLoop;
 						}
 					}
+
 				}
-			}						
+			}
 		}
-		
+
 		System.out.println("Segments removed: " + toRemove.size());
-		roads.removeAll(toRemove);	
-		
-		System.out.println("Roads size: " + + roads.size());
+		roads.removeAll(toRemove);
+
+		System.out.println("Roads size: " + roads.size());
 	}
 
 	public static void main(String[] args) {
