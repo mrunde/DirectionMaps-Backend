@@ -10,12 +10,15 @@ import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.geometry.Envelope2D;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiLineString;
 
@@ -40,15 +43,16 @@ public class Database {
 		
 		try {
 			DataStore dataStore = DataStoreFinder.getDataStore(params);
-			//String[] types = dataStore.getTypeNames();
-			//System.out.println(types.toString());
 
 			FeatureSource fs = dataStore.getFeatureSource("roads");
-			// System.out.println("Count: " + fs.getCount(Query.ALL));
 
 			FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
-			ReferencedEnvelope bbox = new ReferencedEnvelope(7.526751, 7.722273, 51.909702, 52.014736,
-					fs.getSchema().getGeometryDescriptor().getCoordinateReferenceSystem());
+			CoordinateReferenceSystem CRS = fs.getSchema().getGeometryDescriptor().getCoordinateReferenceSystem();
+
+			// TODO create bbox dynamicaly
+			//Envelope2D rec = new Envelope2D(CRS, 7.61, 51.96, 0.40, 0.40);
+			ReferencedEnvelope bbox = new ReferencedEnvelope(7.526751, 7.722273, 51.909702, 52.014736, CRS);
+			//ReferencedEnvelope bbox = new ReferencedEnvelope(rec, CRS);
 			
 			Filter filter1 = ff.like(ff.property("type"), type); //type e.g. motorways
 			Filter filter2 = ff.bbox(ff.property("geom"), bbox);

@@ -8,6 +8,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 
+import de.ifgi.utils.Utils;
+
 public class Sweep {
 
 	// container for the features to display in final shapefile
@@ -21,16 +23,22 @@ public class Sweep {
 	private ArrayList<MultiLineString> residential = new ArrayList<MultiLineString>();
 	private ArrayList<MultiLineString> service = new ArrayList<MultiLineString>();
 
-	//public Coordinate source = new Coordinate(7.5956, 51.9695); // ifgi
-	public Coordinate source = new Coordinate(7.61, 51.96); //castle
-	//public Coordinate source = new Coordinate(7.62, 51.96); //cathedral
-
 	// used to create multilinesegments
 	private GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
-	Utils util;
-	Database db;
+	private Utils util;
+	private Database db;
+	private Coordinate dest; // destination coordinate
 
-	public Sweep() throws SchemaException {
+	/**
+	 * 
+	 * @param destLat destination latitude 
+	 * @param destLng destination longitude
+	 * @param bbox bbox radius
+	 * @param type transportation type
+	 * @throws SchemaException
+	 */
+	public Sweep(double destLat, double destLng, double bbox, String type) throws SchemaException {
+		this.dest = new Coordinate(destLng, destLat); 
 		this.util = new Utils();
 		this.db = new Database();
 
@@ -83,7 +91,7 @@ public class Sweep {
 			for (MultiLineString mls : layer) {
 				// System.out.println(mls.toString());
 				Coordinate mlsCenter = mls.getCoordinates()[(int) (mls.getCoordinates().length / 2)];
-				Coordinate[] coArr = { source, mlsCenter };
+				Coordinate[] coArr = { dest, mlsCenter };
 				LineString ls = geometryFactory.createLineString(coArr);
 
 				newLines.add(geometryFactory.createMultiLineString(new LineString[] { ls }));
@@ -98,7 +106,8 @@ public class Sweep {
 					// ...and check each line segment for intersections
 					// also against its own hierarchy type
 					for (MultiLineString mlsM : roadLayers.get(x)) {
-						// check intersection, ignore case where sight line corresponds to a certain street segment
+						// check intersection, ignore case where sight line
+						// corresponds to a certain street segment
 						if (newLines.get(n).intersects(mlsM) && !roadLayers.get(i).get(n).equals(mlsM)) {
 							// roads.remove(roadLayers.get(i).get(n));
 							toRemove.add(roadLayers.get(i).get(n));
@@ -119,9 +128,13 @@ public class Sweep {
 		System.out.println("Roads size: " + roads.size());
 	}
 
+	
+	// Coordinate(7.5956, 51.9695); // ifgi
+	// Coordinate(7.61, 51.96); // castle
+	// Coordinate(7.62, 51.96); //cathedral
 	public static void main(String[] args) {
 		try {
-			Sweep sweep = new Sweep();
+			Sweep sweep = new Sweep(51.9695, 7.5956, 10.00, "car"); // ifgi
 		} catch (SchemaException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
