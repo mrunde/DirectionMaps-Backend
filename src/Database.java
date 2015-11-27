@@ -66,6 +66,7 @@ public class Database {
 				Feature feature = it.next(); // simplefeatureimpl
 				Geometry g = (Geometry) feature.getDefaultGeometryProperty().getValue();
 				MultiLineString mls = (MultiLineString) g;
+				mls.setUserData(feature);
 				roads.add(mls);
 			}
 			
@@ -76,5 +77,5 @@ public class Database {
 		}
 
 		return roads;
-	}
+	}	
 }

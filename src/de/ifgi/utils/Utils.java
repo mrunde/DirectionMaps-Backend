@@ -5,7 +5,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.swing.UIManager;
+
 import org.geotools.data.DataUtilities;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.Transaction;
@@ -17,13 +19,15 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+
 import com.vividsolutions.jts.geom.MultiLineString;
 
 public class Utils {
 	// information for shapefile creation
-	private final SimpleFeatureType TYPE = DataUtilities.createType("Location","the_geom:MultiLineString:srid=4326," + "number:Integer");
+	private final SimpleFeatureType TYPE = DataUtilities.createType("Location","the_geom:MultiLineString:srid=4326," + "osm_id:Integer," + "name:String," + "ref:String," + "type:String");
 	private SimpleFeatureBuilder featureBuilder;
 
 	public Utils() throws SchemaException {
@@ -34,7 +38,11 @@ public class Utils {
 		ArrayList<SimpleFeature> features = new ArrayList<SimpleFeature>();
 		for (int i = 0; i < roads.size(); i++) {
 			featureBuilder.add(roads.get(i));
-			featureBuilder.add(i);
+			Feature featureProps = (Feature)roads.get(i).getUserData();
+			featureBuilder.add(featureProps.getProperty("osm_id").getValue());
+			featureBuilder.add(featureProps.getProperty("name").getValue());
+			featureBuilder.add(featureProps.getProperty("ref").getValue());
+			featureBuilder.add(featureProps.getProperty("type").getValue());
 			SimpleFeature feature = featureBuilder.buildFeature(null);
 			features.add(feature);
 		}
@@ -47,7 +55,7 @@ public class Utils {
 		try {
 			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 
-			File newFile = new File("output.shp");
+			File newFile = new File("C://Users/avi/Documents/output.shp");
 
 			ShapefileDataStoreFactory dataStoreFactory = new ShapefileDataStoreFactory();
 
