@@ -55,7 +55,7 @@ public class Utils {
 		try {
 			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 
-			File newFile = new File("C://Users/avi/Documents/output.shp");
+			File newFile = new File("output.shp");
 
 			ShapefileDataStoreFactory dataStoreFactory = new ShapefileDataStoreFactory();
 
