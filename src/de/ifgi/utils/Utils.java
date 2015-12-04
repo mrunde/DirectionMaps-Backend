@@ -1,7 +1,10 @@
 package de.ifgi.utils;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,6 +22,7 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.geojson.feature.FeatureJSON;
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -48,6 +52,20 @@ public class Utils {
 		}
 
 		createShapefile(features);
+		createGeoJSON(features);
+		
+	}
+	
+	// creates a geojson file
+	private void createGeoJSON(ArrayList<SimpleFeature> features){
+		SimpleFeatureCollection collection = new ListFeatureCollection(TYPE, features);
+		
+		FeatureJSON fjson = new FeatureJSON();		
+		try{			
+			fjson.writeFeatureCollection(collection, new FileOutputStream(new File("geojson.json")));
+		} catch(IOException ex){
+			ex.printStackTrace();
+		}
 	}
 
 	// creates a shapefile (method is mostly copied from geotools tutorials)
