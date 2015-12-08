@@ -17,6 +17,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
 
 import de.ifgi.configs.CarConfig;
 import de.ifgi.configs.Config;
+import de.ifgi.db.Database;
 import de.ifgi.utils.Utils;
 
 public class Sweep {
@@ -65,7 +66,7 @@ public class Sweep {
 		}
 
 		this.util = new Utils();
-		this.db = new Database();
+		this.db = new Database("server");
 
 		queryData();
 

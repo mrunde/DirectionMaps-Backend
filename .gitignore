@@ -2,7 +2,10 @@
 # matches "bin" in any subfolder
 bin/
 
-# ignore files
+# ignore db config
+*.properties
+
+# shape
 *~ 
 *.dbf
 *.fix

@@ -1,7 +1,12 @@
+package de.ifgi.db;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
@@ -29,18 +34,32 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiLineString;
 
 public class Database {
+	// DB config
+	private Properties config = new Properties();
+	InputStream input = null;
 
-	private Map<String, Object> params;
-
-	public Database() {
-		this.params = new HashMap<String, Object>();
-		params.put("dbtype", "postgis");
-		params.put("host", "localhost");
-		params.put("user", "postgres");
-		params.put("passwd", "0acc1020,");
-		params.put("schema", "public");
-		params.put("database", "postgis");
-		params.put("port", new Integer(5432));
+	public Database(String source) {
+		// get db config 
+		try {
+			String configFile = source == "local" ? "localDB.properties" : "serverDB.properties";
+			input = Database.class.getResourceAsStream(configFile);
+			config.load(input);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
 	}
 	
 	/**
@@ -61,7 +80,7 @@ public class Database {
 		ArrayList<MultiLineString> roads = new ArrayList<MultiLineString>();
 
 		try {
-			DataStore dataStore = DataStoreFinder.getDataStore(params);
+			DataStore dataStore = DataStoreFinder.getDataStore(config);
 			FeatureSource fs = dataStore.getFeatureSource("roads");
 			FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 			
