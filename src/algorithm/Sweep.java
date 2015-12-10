@@ -1,10 +1,9 @@
+package algorithm;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
 import org.geotools.feature.SchemaException;
-import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.OperationNotFoundException;
@@ -15,23 +14,16 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 
-import de.ifgi.configs.CarConfig;
 import de.ifgi.configs.Config;
-import de.ifgi.db.Database;
-import de.ifgi.utils.Utils;
+import de.ifgi.utils.GraphUtil;
+
 
 public class Sweep {
 
-	// container for the features to display in final shapefile
-	private ArrayList<MultiLineString> roads = new ArrayList<MultiLineString>();
 	// hashmap of all road classes
-	private Map<String, ArrayList<MultiLineString>> roadLayers = new HashMap<String, ArrayList<MultiLineString>>();
+	private Map<String, ArrayList<MultiLineString>> roadLayers;
 	// used to create multilinesegments
 	private GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
-	private Utils util;
-	private Database db;
-	private Config config;
-	private double destLat, destLng;
 	private Coordinate dest;
 	private String[] roadClasses; // holds names of all the road classes for the current transportation mode
 
@@ -48,53 +40,20 @@ public class Sweep {
 	 * @throws TransformException
 	 * @throws OperationNotFoundException
 	 */
-	public Sweep(double destLat, double destLng, String type)
+	public Sweep(double destLat, double destLng, Config config, Map<String, ArrayList<MultiLineString>> roadLayers)
 			throws SchemaException, OperationNotFoundException, TransformException, FactoryException {
-
-		this.destLat = destLat;
-		this.destLng = destLng;
+		
+		this.roadClasses = config.roadClasses;
 		this.dest = new Coordinate(destLng, destLat);
+		this.roadLayers = roadLayers;
 		
-		// get appropriate config
-		switch (type) {
-		case "car":
-			this.config = new CarConfig();
-			break;
-
-		default:
-			break;
-		}
-
-		this.util = new Utils();
-		this.db = new Database("local");
-
-		queryData();
-
-		runSweep();
-		
-		GraphUtil gu = new GraphUtil(roads);
-		gu.shortestPath();
-
-//		util.writeToShapefile(roads);
 	}
 
-	// query data from database
-	private void queryData() throws OperationNotFoundException, TransformException, FactoryException {
-		roadClasses = config.roadClasses;
-		for (int i = 0; i < roadClasses.length; i++) {
-			// bbox diameters for each road class
-			double diameter = config.bboxDiameter[i];
-			try {
-				roadLayers.put(roadClasses[i], db.queryRoads(destLat, destLng, diameter, roadClasses[i]));
-			} catch (CQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
 
-	private void runSweep() {
 
+	public ArrayList<MultiLineString> runSweep() {
+		// container for the features to display in final shapefile
+		ArrayList<MultiLineString> roads = new ArrayList<MultiLineString>();
 		ArrayList<MultiLineString> newLines = new ArrayList<MultiLineString>();
 		HashSet<MultiLineString> toRemove = new HashSet<MultiLineString>();
 		roads.clear();
@@ -142,22 +101,8 @@ public class Sweep {
 
 		System.out.println("Segments removed: " + toRemove.size());
 		roads.removeAll(toRemove);
-
 		System.out.println("Roads size: " + roads.size());
-	}
-
-
-	// Coordinate(7.61, 51.96); // castle
-	// Coordinate(7.62, 51.96); //cathedral
-	public static void main(String[] args) throws OperationNotFoundException, TransformException, FactoryException {
-		try {
-			Sweep sweep = new Sweep(51.9695, 7.5956, "car"); // ifgi
-//			Sweep sweep = new Sweep(51.956667, 7.635, "car"); // train station
-//			Sweep sweep = new Sweep(51.963503, 7.615644, "car"); // castle
-		} catch (SchemaException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		return roads;
 	}
 
 }

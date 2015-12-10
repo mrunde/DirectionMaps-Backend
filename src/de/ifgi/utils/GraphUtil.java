@@ -1,3 +1,4 @@
+package de.ifgi.utils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -26,7 +27,6 @@ import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.Point;
 
 import de.ifgi.db.PGRDatabase;
-import de.ifgi.utils.Utils;
 
 public class GraphUtil {
 

@@ -1,4 +1,5 @@
 package de.ifgi.db;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,7 +25,9 @@ import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
+import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.OperationNotFoundException;
@@ -33,17 +36,22 @@ import org.opengis.referencing.operation.TransformException;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiLineString;
 
+import de.ifgi.configs.Config;
+
+
 public class Database {
 	// DB config
-	private Properties config = new Properties();
-	InputStream input = null;
+	private Properties DBParams = new Properties();
+	private InputStream input = null;
+	private Config config;
 
-	public Database(String source) {
-		// get db config 
+	public Database(String source, Config config) {
+		this.config = config;
+		// get db params
 		try {
-			String configFile = source == "local" ? "localDB.properties" : "serverDB.properties";
-			input = Database.class.getResourceAsStream(configFile);
-			config.load(input);
+			String paramsSource = source == "local" ? "localDB.properties" : "serverDB.properties";
+			input = Database.class.getResourceAsStream(paramsSource);
+			DBParams.load(input);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -59,28 +67,49 @@ public class Database {
 				}
 			}
 		}
-		
+
+
 	}
 	
+	
+	// query data from database
+	public Map<String, ArrayList<MultiLineString>> queryData(double destLat, double destLng) 
+			throws OperationNotFoundException, TransformException, FactoryException {
+		Map<String, ArrayList<MultiLineString>> roadLayers = new HashMap<String, ArrayList<MultiLineString>>();
+		String[] roadClasses = config.roadClasses;
+		for (int i = 0; i < roadClasses.length; i++) {
+			// bbox diameters for each road class
+			double diameter = config.bboxDiameter[i];
+			roadLayers.put(roadClasses[i], queryRoads(destLat, destLng, diameter, roadClasses[i]));
+		}
+		return roadLayers;
+	}
+
 	/**
 	 * 
-	 * @param lat destination lat
-	 * @param lng destination lng
-	 * @param diameter diameter of the bounding box in m
-	 * @param type transportation type
+	 * @param lat
+	 *            destination lat
+	 * @param lng
+	 *            destination lng
+	 * @param diameter
+	 *            diameter of the bounding box in m
+	 * @param type
+	 *            transportation type
 	 * @return
+	 * @throws NoSuchAuthorityCodeException 
 	 * @throws CQLException
 	 * @throws OperationNotFoundException
 	 * @throws TransformException
 	 * @throws FactoryException
+	 * @throws MismatchedDimensionException 
 	 */
-	public ArrayList<MultiLineString> queryRoads(double lat, double lng, double diameter, String type)
-			throws CQLException, OperationNotFoundException, TransformException, FactoryException {
+	public ArrayList<MultiLineString> queryRoads(double lat, double lng, double diameter, String type) 
+			throws NoSuchAuthorityCodeException, FactoryException, MismatchedDimensionException, TransformException {
 
 		ArrayList<MultiLineString> roads = new ArrayList<MultiLineString>();
 
 		try {
-			DataStore dataStore = DataStoreFinder.getDataStore(config);
+			DataStore dataStore = DataStoreFinder.getDataStore(DBParams);
 			FeatureSource fs = dataStore.getFeatureSource("roads");
 			FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 			
