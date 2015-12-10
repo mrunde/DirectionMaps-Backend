@@ -66,13 +66,16 @@ public class Sweep {
 		}
 
 		this.util = new Utils();
-		this.db = new Database("server");
+		this.db = new Database("local");
 
 		queryData();
 
 		runSweep();
+		
+		GraphUtil gu = new GraphUtil(roads);
+		gu.shortestPath();
 
-		util.writeToShapefile(roads);
+//		util.writeToShapefile(roads);
 	}
 
 	// query data from database
@@ -149,7 +152,8 @@ public class Sweep {
 	public static void main(String[] args) throws OperationNotFoundException, TransformException, FactoryException {
 		try {
 			Sweep sweep = new Sweep(51.9695, 7.5956, "car"); // ifgi
-			//Sweep sweep = new Sweep(51.956667, 7.635, "car"); // train station
+//			Sweep sweep = new Sweep(51.956667, 7.635, "car"); // train station
+//			Sweep sweep = new Sweep(51.963503, 7.615644, "car"); // castle
 		} catch (SchemaException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

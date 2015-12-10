@@ -44,9 +44,9 @@ public class Utils {
 			featureBuilder.add(roads.get(i));
 			Feature featureProps = (Feature)roads.get(i).getUserData();
 			featureBuilder.add(featureProps.getProperty("osm_id").getValue());
-			featureBuilder.add(featureProps.getProperty("name").getValue());
-			featureBuilder.add(featureProps.getProperty("ref").getValue());
-			featureBuilder.add(featureProps.getProperty("type").getValue());
+//			featureBuilder.add(featureProps.getProperty("name").getValue());
+//			featureBuilder.add(featureProps.getProperty("ref").getValue());
+//			featureBuilder.add(featureProps.getProperty("type").getValue());
 			SimpleFeature feature = featureBuilder.buildFeature(null);
 			features.add(feature);
 		}
@@ -73,7 +73,7 @@ public class Utils {
 		try {
 			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 
-			File newFile = new File("output.shp");
+			File newFile = new File("output2.shp");
 
 			ShapefileDataStoreFactory dataStoreFactory = new ShapefileDataStoreFactory();
 
