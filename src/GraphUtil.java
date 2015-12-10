@@ -116,8 +116,8 @@ public class GraphUtil {
 		HashSet<MultiLineString> result = new HashSet<MultiLineString>();
 		
 		// source node (equal to dijkstra root)
-//		Node start = findEdgeClosestTo(51.969976, 7.596633, graph.getEdges()).getNodeA(); //ifgi
-		Node start = findEdgeClosestTo(51.956667, 7.635, graph.getEdges()).getNodeA();	//train station
+		Node start = findEdgeClosestTo(51.969976, 7.596633, graph.getEdges()).getNodeA(); //ifgi
+//		Node start = findEdgeClosestTo(51.956667, 7.635, graph.getEdges()).getNodeA();	//train station
 //		Node start = findEdgeClosestTo(51.963503, 7.615644, graph.getEdges()).getNodeA();	//castle
 		System.out.println("Contains Node: " + graph.getNodes().contains(start));
 

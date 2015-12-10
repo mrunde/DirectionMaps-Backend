@@ -50,10 +50,9 @@ public class Utils {
 			SimpleFeature feature = featureBuilder.buildFeature(null);
 			features.add(feature);
 		}
-
-		createShapefile(features);
-		createGeoJSON(features);
 		
+		createGeoJSON(features);
+		createShapefile(features);		
 	}
 	
 	// creates a geojson file
@@ -73,7 +72,7 @@ public class Utils {
 		try {
 			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 
-			File newFile = new File("output2.shp");
+			File newFile = new File("output.shp");
 
 			ShapefileDataStoreFactory dataStoreFactory = new ShapefileDataStoreFactory();
 
