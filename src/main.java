@@ -9,7 +9,7 @@ import org.opengis.referencing.operation.TransformException;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.MultiLineString;
 
-import algorithm.Sweep;
+import de.ifgi.algorithm.Sweep;
 import de.ifgi.configs.CarConfig;
 import de.ifgi.configs.Config;
 import de.ifgi.configs.ConfigLoader;
