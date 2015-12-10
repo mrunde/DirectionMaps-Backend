@@ -15,7 +15,6 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 
 import de.ifgi.configs.Config;
-import de.ifgi.utils.GraphUtil;
 
 
 public class Sweep {
@@ -33,8 +32,10 @@ public class Sweep {
 	 *            destination latitude
 	 * @param destLng
 	 *            destination longitude
-	 * @param type
-	 *            transportation type
+	 * @param config
+	 *            transportation type config
+	 * @param roadLayers
+	 *           
 	 * @throws SchemaException
 	 * @throws FactoryException
 	 * @throws TransformException
