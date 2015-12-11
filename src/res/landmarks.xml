@@ -1,0 +1,98 @@
+<landmarks>
+	<landmark>
+		<name>Lake Aa</name>
+		<category>water_body</category>
+		<location>51.949444,7.603514</location>
+		<radius>500000</radius>
+	</landmark>
+	<landmark>
+		<name>Aral Gas Station</name>
+		<category>gas_station</category>
+		<location>51.967284,7.61386</location>
+		<radius>500000</radius>
+	</landmark>
+	<landmark>
+		<name>Buddenturm</name>
+		<category>tower</category>
+		<location>51.96623,7.623138</location>
+		<radius>500000</radius>
+	</landmark>
+	<landmark>
+		<name>Cineplex</name>
+		<category>cinema</category>
+		<location>51.950336,7.637018</location>
+		<radius>500000</radius>
+	</landmark>
+	<landmark>
+		<name>Cathedral</name>
+		<category>church</category>
+		<location>51.962825,7.625772</location>
+		<radius>500000</radius>
+	</landmark>
+	<landmark>
+		<name>Halle Münsterland</name>
+		<category>stadium</category>
+		<location>51.949066,7.63982</location>
+		<radius>500000</radius>
+	</landmark>
+	<landmark>
+		<name>Main Train Station</name>
+		<category>train_station</category>
+		<location>51.956667,7.635</location>
+		<radius>500000</radius>
+	</landmark>
+	<landmark>
+		<name>City Centre</name>
+		<category>city_center</category>
+		<location>51.962825,7.625772</location>
+		<radius>800000</radius>
+	</landmark>
+	<landmark>
+		<name>Leonardo Campus</name>
+		<category>university</category>
+		<location>51.973388,7.601604</location>
+		<radius>500000</radius>
+	</landmark>
+	<landmark>
+		<name>Picasso Museum</name>
+		<category>museum</category>
+		<location>51.959883,7.62651</location>
+		<radius>500000</radius>
+	</landmark>
+	<landmark>
+		<name>Preußenstadion</name>
+		<category>stadium</category>
+		<location>51.92917,7.624766</location>
+		<radius>500000</radius>
+	</landmark>
+	<landmark>
+		<name>Münster Castle</name>
+		<category>castle</category>
+		<location>51.963622,7.613187</location>
+		<radius>500000</radius>
+	</landmark>
+	<landmark>
+		<name>UKM</name>
+		<category>hospital</category>
+		<location>51.9603,7.596262</location>
+		<radius>500000</radius>
+	</landmark>
+	<landmark>
+		<name>York Center</name>
+		<category>shopping</category>
+		<location>51.973418,7.611111</location>
+		<radius>500000</radius>
+	</landmark>
+	<landmark>
+		<name>Watertower</name>
+		<category>tower_water</category>
+		<location>51.947076,7.620066</location>
+		<radius>700000</radius>
+	</landmark>
+	<landmark>
+		<name>Zoo</name>
+		<category>zoo</category>
+		<location>51.947907,7.589782</location>
+		<radius>500000</radius>
+	</landmark>
+</landmarks>
