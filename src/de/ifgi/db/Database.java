@@ -17,9 +17,9 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.Envelope2D;
+import org.geotools.geometry.jts.JTSFactoryFinder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.referencing.CRS;
-
 import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -33,6 +33,8 @@ import org.opengis.referencing.operation.OperationNotFoundException;
 import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 
 import de.ifgi.configs.Config;
@@ -109,7 +111,7 @@ public class Database {
 
 		try {
 			DataStore dataStore = DataStoreFinder.getDataStore(DBParams);
-			FeatureSource fs = dataStore.getFeatureSource("roads");
+			FeatureSource fs = dataStore.getFeatureSource("roads_pgr");
 			FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 			
 			// create bbox dynamicaly
@@ -130,18 +132,25 @@ public class Database {
 			// geotools somehow messed up xy order, so init again with the right order
 			bbox.init(bbox.getMinY(), bbox.getMaxY(), bbox.getMinX(), bbox.getMaxX());
 			
-			Filter filter1 = ff.like(ff.property("type"), type); // type e.g. motorway														
-			Filter filter2 = ff.bbox(ff.property("geom"), bbox);
+			Filter filter1 = ff.equals(ff.property("clazz"), ff.literal(Integer.parseInt(type)));													
+			Filter filter2 = ff.bbox(ff.property("geom_way"), bbox);
 			Filter filter = ff.and(filter1, filter2);
 
 			FeatureCollection<SimpleFeatureType, Feature> roadFeatures = fs.getFeatures(filter);
-
+			
+			System.out.println(roadFeatures.toString());
+			System.out.println(roadFeatures.size());
+			
 			FeatureIterator<Feature> it = roadFeatures.features();
 
+			GeometryFactory geometryFactory = JTSFactoryFinder.getGeometryFactory();
+			
 			while (it.hasNext()) {
 				Feature feature = it.next(); // simplefeatureimpl
 				Geometry g = (Geometry) feature.getDefaultGeometryProperty().getValue();
-				MultiLineString mls = (MultiLineString) g;
+				LineString ls = (LineString) g;
+				
+				MultiLineString mls = geometryFactory.createMultiLineString(new LineString[]{ls});
 				mls.setUserData(feature);
 				roads.add(mls);
 			}
