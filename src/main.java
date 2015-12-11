@@ -10,6 +10,7 @@ import org.opengis.referencing.operation.TransformException;
 import com.vividsolutions.jts.geom.MultiLineString;
 
 import de.ifgi.algorithm.Router;
+import de.ifgi.algorithm.Simplifier;
 import de.ifgi.algorithm.Sweep;
 import de.ifgi.configs.Config;
 import de.ifgi.configs.ConfigLoader;
@@ -45,6 +46,8 @@ public class main {
 		//shortest path
 		g = new GraphUtil(roads).getGraph();
 		roads = new Router(g, roads).shortestPath(destLat, destLng);
+		//simplify
+		roads = new Simplifier().simplify(roads);
 		// output
 		utils.writeToShapefile(roads);
 	}
