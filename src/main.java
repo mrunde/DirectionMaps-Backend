@@ -23,10 +23,10 @@ public class main {
 	// Coordinate(7.61, 51.96); // castle
 	// Coordinate(7.62, 51.96); //cathedral
 	public static void main(String[] args) throws OperationNotFoundException, TransformException, FactoryException, SchemaException {
-//		double destLat = 51.961831;
-//		double destLng = 7.617630;
-		double destLat = 51.969259;
-		double destLng = 7.596005;
+		double destLat = 51.961831;
+		double destLng = 7.617630;
+//		double destLat = 51.969259;
+//		double destLng = 7.596005;
 		Config config = new ConfigLoader().getConfig("car");
 		
 		ArrayList<MultiLineString> roads;

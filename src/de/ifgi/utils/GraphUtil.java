@@ -6,23 +6,22 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.graph.build.line.LineStringGraphGenerator;
 import org.geotools.graph.structure.Graph;
 import org.opengis.coverage.processing.OperationNotFoundException;
+import org.opengis.feature.Feature;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 
-import de.ifgi.db.PGRDatabase;
+import de.ifgi.configs.ConfigLoader;
+import de.ifgi.db.Database;
 
 public class GraphUtil {
 
 	private ArrayList<LineString> topology;
-	private ArrayList<MultiLineString> roads;
 	private Graph graph;
 
 	public GraphUtil(ArrayList<MultiLineString> roads) {
-		this.roads = roads;
-
 		try {
 			queryPGRData();
 		} catch (Exception ex) {
@@ -54,11 +53,11 @@ public class GraphUtil {
 
 	// queries the data from the "roads_pgr" table
 	private void queryPGRData() throws OperationNotFoundException, TransformException, FactoryException {
-		PGRDatabase tdb = new PGRDatabase();
+		Database db = new Database("server", new ConfigLoader().getConfig("car"));
 		try {
-			this.topology = tdb.queryRoads(51.9695, 7.5956, 15000);
-		} catch (CQLException ceq) {
-			ceq.printStackTrace();
+			this.topology = db.queryRoads(51.9695, 7.5956, 15000);
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 
 	}
