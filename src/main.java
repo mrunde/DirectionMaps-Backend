@@ -22,13 +22,20 @@ public class main {
 
 	// Coordinate(7.61, 51.96); // castle
 	// Coordinate(7.62, 51.96); //cathedral
+	/**
+	 * 
+	 * @param args lat lng type
+	 * @throws OperationNotFoundException
+	 * @throws TransformException
+	 * @throws FactoryException
+	 * @throws SchemaException
+	 */
 	public static void main(String[] args) throws OperationNotFoundException, TransformException, FactoryException, SchemaException {
-		double destLat = 51.961831;
-		double destLng = 7.617630;
-//		double destLat = 51.969259;
-//		double destLng = 7.596005;
-		Config config = new ConfigLoader().getConfig("car");
-		
+		double destLat = args.length == 0 ? 51.961831 : Double.parseDouble(args[0]);
+		double destLng = args.length == 0 ? 7.617630 : Double.parseDouble(args[1]);
+		String transportationType = args.length == 0 ? "car" : args[2];
+		Config config = new ConfigLoader().getConfig(transportationType);
+
 		ArrayList<MultiLineString> roads;
 		Map<String, ArrayList<MultiLineString>> roadLayers;
 		Database db = new Database("server", config);
