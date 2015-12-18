@@ -44,9 +44,9 @@ public class Utils {
 			featureBuilder.add(roads.get(i));
 			Feature featureProps = (Feature)roads.get(i).getUserData();
 			featureBuilder.add(featureProps.getProperty("osm_id").getValue());
-//			featureBuilder.add(featureProps.getProperty("name").getValue());
+			featureBuilder.add(featureProps.getProperty("osm_name").getValue());
 //			featureBuilder.add(featureProps.getProperty("ref").getValue());
-//			featureBuilder.add(featureProps.getProperty("type").getValue());
+			featureBuilder.add(featureProps.getProperty("clazz").getValue());
 			SimpleFeature feature = featureBuilder.buildFeature(null);
 			features.add(feature);
 		}
