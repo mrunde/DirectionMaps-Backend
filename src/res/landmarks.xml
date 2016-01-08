@@ -61,7 +61,7 @@
 	</landmark>
 	<landmark>
 		<name>Preußenstadion</name>
-		<category>stadium</category>
+		<category>soccer</category>
 		<location>51.92917,7.624766</location>
 		<radius>500000</radius>
 	</landmark>
@@ -94,5 +94,17 @@
 		<category>zoo</category>
 		<location>51.947907,7.589782</location>
 		<radius>500000</radius>
+	</landmark>
+	<landmark>
+		<name>Port</name>
+		<category>port</category>
+		<location>51.951580,7.640403</location>
+		<radius>500000</radius>
+	</landmark>
+	<landmark>
+		<name>Airport Münster/Osnabrück</name>
+		<category>airport</category>
+		<location>52.131288,7.690119</location>
+		<radius>1000000</radius>
 	</landmark>
 </landmarks>
