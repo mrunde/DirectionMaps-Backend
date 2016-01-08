@@ -52,11 +52,13 @@ public class main {
 		// visibility sweep
 		sweeper = new Sweep(destLat, destLng, config, roadLayers);
 		roads = sweeper.runSweep();
-		//shortest path
+		// shortest path
 		g = new GraphUtil(roads).getGraph();
 		roads = new Router(g, roads).shortestPath(destLat, destLng);
-		//simplify
+		// simplify
 		roads = new Simplifier().simplify(roads);
+		// landmarks
+		// TODO implementation of landmark integration
 		// output
 		utils.writeToShapefile(roads);
 	}
