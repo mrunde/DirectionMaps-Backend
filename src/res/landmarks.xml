@@ -4,119 +4,119 @@
 		<category>water_body</category>
 		<lat>51.949444</lat>
 		<lng>7.603514</lng>
-		<radius>0.5</radius>
+		<radius>500</radius>
 	</landmark>
 	<landmark>
 		<name>Aral Gas Station</name>
 		<category>gas_station</category>
 		<lat>51.967284</lat>
 		<lng>7.61386</lng>
-		<radius>0.5</radius>
+		<radius>500</radius>
 	</landmark>
 	<landmark>
 		<name>Buddenturm</name>
 		<category>tower</category>
 		<lat>51.96623</lat>
 		<lng>7.623138</lng>
-		<radius>0.5</radius>
+		<radius>500</radius>
 	</landmark>
 	<landmark>
 		<name>Cineplex</name>
 		<category>cinema</category>
 		<lat>51.950336</lat>
 		<lng>7.637018</lng>
-		<radius>0.5</radius>
+		<radius>500</radius>
 	</landmark>
 	<landmark>
 		<name>Cathedral</name>
 		<category>church</category>
 		<lat>51.962825</lat>
 		<lng>7.625772</lng>
-		<radius>0.5</radius>
+		<radius>500</radius>
 	</landmark>
 	<landmark>
 		<name>Halle Münsterland</name>
 		<category>stadium</category>
 		<lat>51.949066</lat>
 		<lng>7.63982</lng>
-		<radius>0.5</radius>
+		<radius>500</radius>
 	</landmark>
 	<landmark>
 		<name>Main Train Station</name>
 		<category>train_station</category>
 		<lat>51.956667</lat>
 		<lng>7.635</lng>
-		<radius>0.5</radius>
+		<radius>500</radius>
 	</landmark>
 	<landmark>
 		<name>City Centre</name>
 		<category>city_center</category>
 		<lat>51.962825</lat>
 		<lng>7.625772</lng>
-		<radius>0.5</radius>
+		<radius>500</radius>
 	</landmark>
 	<landmark>
 		<name>Leonardo Campus</name>
 		<category>university</category>
 		<lat>51.973388</lat>
 		<lng>7.601604</lng>
-		<radius>0.5</radius>
+		<radius>500</radius>
 	</landmark>
 	<landmark>
 		<name>Picasso Museum</name>
 		<category>museum</category>
 		<lat>51.959883</lat>
 		<lng>7.62651</lng>
-		<radius>0.5</radius>
+		<radius>500</radius>
 	</landmark>
 	<landmark>
 		<name>Preußenstadion</name>
 		<category>soccer</category>
 		<lat>51.92917</lat>
 		<lng>7.624766</lng>
-		<radius>0.5</radius>
+		<radius>500</radius>
 	</landmark>
 	<landmark>
 		<name>Münster Castle</name>
 		<category>castle</category>
 		<lat>51.963622</lat>
 		<lng>7.613187</lng>
-		<radius>0.5</radius>
+		<radius>500</radius>
 	</landmark>
 	<landmark>
 		<name>UKM</name>
 		<category>hospital</category>
 		<lat>51.9603</lat>
 		<lng>7.596262</lng>
-		<radius>0.5</radius>
+		<radius>500</radius>
 	</landmark>
 	<landmark>
 		<name>York Center</name>
 		<category>shopping</category>
 		<lat>51.973418</lat>
 		<lng>7.611111</lng>
-		<radius>0.5</radius>
+		<radius>500</radius>
 	</landmark>
 	<landmark>
 		<name>Watertower</name>
 		<category>tower_water</category>
 		<lat>51.947076</lat>
 		<lng>7.620066</lng>
-		<radius>0.5</radius>
+		<radius>500</radius>
 	</landmark>
 	<landmark>
 		<name>Zoo</name>
 		<category>zoo</category>
 		<lat>51.947907</lat>
 		<lng>7.589782</lng>
-		<radius>0.5</radius>
+		<radius>500</radius>
 	</landmark>
 	<landmark>
 		<name>Port</name>
 		<category>port</category>
 		<lat>51.951580</lat>
 		<lng>7.640403</lng>
-		<radius>0.5</radius>
+		<radius>500</radius>
 	</landmark>
 	<landmark>
 		<name>Airport Münster/Osnabrück</name>
