@@ -9,12 +9,14 @@ import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.MultiLineString;
 
+import de.ifgi.algorithm.LandmarksIncluder;
 import de.ifgi.algorithm.Router;
 import de.ifgi.algorithm.Simplifier;
 import de.ifgi.algorithm.Sweep;
 import de.ifgi.configs.Config;
 import de.ifgi.configs.ConfigLoader;
 import de.ifgi.db.Database;
+import de.ifgi.landmark.Landmark;
 import de.ifgi.utils.GraphUtil;
 import de.ifgi.utils.Utils;
 
@@ -58,7 +60,10 @@ public class main {
 		// simplify
 		roads = new Simplifier().simplify(roads);
 		// landmarks
-		// TODO implementation of landmark integration
+		ArrayList<Landmark> landmarks = new LandmarksIncluder().includeLandmarks(roads);
+		landmarks.forEach(landmark -> {
+			System.out.println(landmark.toString());
+		});
 		// output
 		utils.writeToShapefile(roads);
 	}
