@@ -61,9 +61,6 @@ public class main {
 		roads = new Simplifier().simplify(roads);
 		// landmarks
 		ArrayList<Landmark> landmarks = new LandmarksIncluder().includeLandmarks(roads);
-		landmarks.forEach(landmark -> {
-			System.out.println(landmark.toString());
-		});
 		// output
 		utils.writeToShapefile(roads);
 	}

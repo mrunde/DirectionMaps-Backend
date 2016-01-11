@@ -42,8 +42,7 @@ public class LandmarksIncluder {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				System.out.println("Landmark Distance: " + distance);
-				if (distance < landmark.getRadius()) {
+				if (distance < landmark.getRadius() && distance > 10) {
 					result.add(landmark);
 					iterator.remove();
 				}
