@@ -57,23 +57,27 @@ public class Utils {
 			features.add(feature);
 		}
 		
-		createGeoJSON(features, ROAD_OUTPUT);
+		createGeoJSON(features, ROAD_TYPE, ROAD_OUTPUT);
 		createShapefile(features, ROAD_TYPE, ROAD_OUTPUT);
 	}
 	
 	public void writeLandmarksToShapefile(ArrayList<Landmark> landmarks) {
 		ArrayList<SimpleFeature> features = new ArrayList<SimpleFeature>();
 		for (int i = 0; i < landmarks.size(); i++) {
-			landmarkFeatureBuilder.add(landmarks.get(i));
+			landmarkFeatureBuilder.add(landmarks.get(i).getLocation());
+			landmarkFeatureBuilder.add(landmarks.get(i).getName());
+			landmarkFeatureBuilder.add(landmarks.get(i).getCategory());
+			SimpleFeature feature = landmarkFeatureBuilder.buildFeature(null);
+			features.add(feature);
 		}
 		
-		createGeoJSON(features, LANDMARK_OUTPUT);
+		createGeoJSON(features, LANDMARK_TYPE, LANDMARK_OUTPUT);
 		createShapefile(features, LANDMARK_TYPE, LANDMARK_OUTPUT);
 	}
 	
 	// creates a geojson file for the roads
-	private void createGeoJSON(ArrayList<SimpleFeature> features, String outputName){
-		SimpleFeatureCollection collection = new ListFeatureCollection(ROAD_TYPE, features);
+	private void createGeoJSON(ArrayList<SimpleFeature> features, SimpleFeatureType type, String outputName){
+		SimpleFeatureCollection collection = new ListFeatureCollection(type, features);
 		
 		FeatureJSON fjson = new FeatureJSON();		
 		try{			
@@ -141,10 +145,8 @@ public class Utils {
 				} finally {
 					transaction.close();
 				}
-				System.exit(0); // success!
 			} else {
 				System.out.println(typeName + " does not support read/write access");
-				System.exit(1);
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
