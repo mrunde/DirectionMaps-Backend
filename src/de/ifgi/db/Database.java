@@ -180,7 +180,7 @@ public class Database {
 	 * @throws FactoryException
 	 * @throws MismatchedDimensionException 
 	 */
-	public ArrayList<LineString> queryRoads(double lat, double lng, double diameter) 
+	public ArrayList<LineString> queryRoads(double lat, double lng) 
 			throws NoSuchAuthorityCodeException, FactoryException, MismatchedDimensionException, TransformException {
 
 		ArrayList<LineString> roads = new ArrayList<LineString>();
@@ -201,6 +201,7 @@ public class Database {
 			// transform into DHDN
 			mathTransform.transform(dest, dest);
 			// construct bbox according to the definition in the config
+			double diameter = config.bboxDiameter[0];
 			Envelope2D rec = new Envelope2D(DHDN, dest.x - (diameter/2), dest.y - (diameter/2)  , diameter, diameter);
 			ReferencedEnvelope bbox = new ReferencedEnvelope(rec, DHDN);
 			// transform back to WGS84

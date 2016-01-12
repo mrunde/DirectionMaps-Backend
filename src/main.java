@@ -55,7 +55,7 @@ public class main {
 		sweeper = new Sweep(destLat, destLng, config, roadLayers);
 		roads = sweeper.runSweep();
 		// shortest path
-		g = new GraphUtil(roads).getGraph();
+		g = new GraphUtil(roads, db, destLat, destLng).getGraph();
 		roads = new Router(g, roads).shortestPath(destLat, destLng);
 		// simplify
 		roads = new Simplifier().simplify(roads);

@@ -21,9 +21,9 @@ public class GraphUtil {
 	private ArrayList<LineString> topology;
 	private Graph graph;
 
-	public GraphUtil(ArrayList<MultiLineString> roads) {
+	public GraphUtil(ArrayList<MultiLineString> roads, Database db, double destLat, double destLng) {
 		try {
-			queryPGRData();
+			queryPGRData(db, destLat, destLng);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -52,10 +52,10 @@ public class GraphUtil {
 	}
 
 	// queries the data from the "roads_pgr" table
-	private void queryPGRData() throws OperationNotFoundException, TransformException, FactoryException {
-		Database db = new Database("server", new ConfigLoader().getConfig("car"));
+	private void queryPGRData(Database db, double destLat, double destLng) throws OperationNotFoundException, TransformException, FactoryException {
+		//Database db = new Database("server", new ConfigLoader().getConfig("car"));
 		try {
-			this.topology = db.queryRoads(51.9695, 7.5956, 15000);
+			this.topology = db.queryRoads(destLat, destLng);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
