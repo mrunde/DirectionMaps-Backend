@@ -111,7 +111,8 @@ public class Database {
 
 		try {
 			DataStore dataStore = DataStoreFinder.getDataStore(DBParams);
-			FeatureSource fs = dataStore.getFeatureSource("roads_pgr");
+			// get table name from config
+			FeatureSource fs = dataStore.getFeatureSource(config.DBTable);
 			FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 			
 			// create bbox dynamicaly
@@ -187,7 +188,7 @@ public class Database {
 
 		try {
 			DataStore dataStore = DataStoreFinder.getDataStore(DBParams);
-			FeatureSource fs = dataStore.getFeatureSource("roads_pgr");
+			FeatureSource fs = dataStore.getFeatureSource(config.DBTable);
 			FilterFactory2 ff = CommonFactoryFinder.getFilterFactory2();
 			
 			// create bbox dynamicaly

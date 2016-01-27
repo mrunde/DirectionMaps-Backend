@@ -11,6 +11,10 @@ public class ConfigLoader {
 		case "car":
 			config = new CarConfig();
 			break;
+			
+		case "bike":
+			config = new BikeConfig();
+			break;
 
 		default:
 			break;

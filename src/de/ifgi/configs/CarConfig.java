@@ -10,6 +10,7 @@ public class CarConfig extends Config{
 		this.roadClasses = new String[] {"11", "15", "21", "31", "41", "42"};
 		// diameter of the bbox for each road class in m
 		this.bboxDiameter = new double[] {15000.00, 7500.00, 5000.00, 3000.00, 1000.00, 500.00};
+		this.DBTable = "roads_pgr";
 	}
 
 }
