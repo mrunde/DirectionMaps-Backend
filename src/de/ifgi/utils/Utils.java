@@ -44,7 +44,7 @@ public class Utils {
 		this.landmarkFeatureBuilder = new SimpleFeatureBuilder(LANDMARK_TYPE);
 	}
 
-	public void writeRoadsToShapefile(ArrayList<MultiLineString> roads) {
+	public void writeRoadsToShapefile(ArrayList<MultiLineString> roads, String fileNameSuffix) {
 		ArrayList<SimpleFeature> features = new ArrayList<SimpleFeature>();
 		for (int i = 0; i < roads.size(); i++) {
 			roadFeatureBuilder.add(roads.get(i));
@@ -57,11 +57,11 @@ public class Utils {
 			features.add(feature);
 		}
 		
-		createGeoJSON(features, ROAD_TYPE, ROAD_OUTPUT);
-		createShapefile(features, ROAD_TYPE, ROAD_OUTPUT);
+		createGeoJSON(features, ROAD_TYPE, ROAD_OUTPUT, fileNameSuffix);
+		createShapefile(features, ROAD_TYPE, ROAD_OUTPUT, fileNameSuffix);
 	}
 	
-	public void writeLandmarksToShapefile(ArrayList<Landmark> landmarks) {
+	public void writeLandmarksToShapefile(ArrayList<Landmark> landmarks, String fileNameSuffix) {
 		ArrayList<SimpleFeature> features = new ArrayList<SimpleFeature>();
 		for (int i = 0; i < landmarks.size(); i++) {
 			landmarkFeatureBuilder.add(landmarks.get(i).getLocation());
@@ -71,28 +71,28 @@ public class Utils {
 			features.add(feature);
 		}
 		
-		createGeoJSON(features, LANDMARK_TYPE, LANDMARK_OUTPUT);
-		createShapefile(features, LANDMARK_TYPE, LANDMARK_OUTPUT);
+		createGeoJSON(features, LANDMARK_TYPE, LANDMARK_OUTPUT, fileNameSuffix);
+		createShapefile(features, LANDMARK_TYPE, LANDMARK_OUTPUT, fileNameSuffix);
 	}
 	
 	// creates a geojson file for the roads
-	private void createGeoJSON(ArrayList<SimpleFeature> features, SimpleFeatureType type, String outputName){
+	private void createGeoJSON(ArrayList<SimpleFeature> features, SimpleFeatureType type, String outputName, String fileNameSuffix){
 		SimpleFeatureCollection collection = new ListFeatureCollection(type, features);
 		
 		FeatureJSON fjson = new FeatureJSON();		
 		try{			
-			fjson.writeFeatureCollection(collection, new FileOutputStream(new File(outputName + ".json")));
+			fjson.writeFeatureCollection(collection, new FileOutputStream(new File(outputName + fileNameSuffix + ".json")));
 		} catch(IOException ex){
 			ex.printStackTrace();
 		}
 	}
 
 	// creates a shapefile (method is mostly copied from geotools tutorials)
-	private void createShapefile(ArrayList<SimpleFeature> features, SimpleFeatureType type, String outputName) {
+	private void createShapefile(ArrayList<SimpleFeature> features, SimpleFeatureType type, String outputName, String fileNameSuffix) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 
-			File newFile = new File(outputName + ".shp");
+			File newFile = new File(outputName + fileNameSuffix + ".shp");
 
 			ShapefileDataStoreFactory dataStoreFactory = new ShapefileDataStoreFactory();
 

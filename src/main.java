@@ -37,6 +37,7 @@ public class main {
 		double destLng = args.length == 0 ? 7.617630 : Double.parseDouble(args[1]);
 		String transportationType = args.length == 0 ? "car" : args[2];
 		Config config = new ConfigLoader().getConfig(transportationType);
+		String fileNameSuffix = args.length <= 3 ? "" : args[3].replaceAll("[^a-zA-Z0-9]","");
 
 		ArrayList<MultiLineString> roads;
 		Map<String, ArrayList<MultiLineString>> roadLayers;
@@ -62,8 +63,8 @@ public class main {
 		// landmarks
 		ArrayList<Landmark> landmarks = new LandmarksIncluder().includeLandmarks(roads);
 		// roads output
-		utils.writeRoadsToShapefile(roads);
+		utils.writeRoadsToShapefile(roads, fileNameSuffix);
 		// landmarks output
-		utils.writeLandmarksToShapefile(landmarks);
+		utils.writeLandmarksToShapefile(landmarks, fileNameSuffix);
 	}
 }
