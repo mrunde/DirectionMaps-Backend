@@ -26,7 +26,7 @@ SET search_path = topology,public;
 * run OSM2PO: `java -jar osm2po-core-5.0.0-signed.jar prefix=ms {file}.osm`
 * (keep OSM2PO open and test if OSM2PO created a valid topology at `http://localhost:8888/Osm2poService`)
 * this will create a SQL file in directory "ms"
-* import this file into PostGreSQL using psq:l
+* import this file into PostGreSQL using psql
 * `psql -U postgres -d {database_name} -q -f "{path_to_sql_file}"` (a commandline template is also available in the created log file)
 * (run twice if table ms_2po_4pgr doesn't exist already)
 * rename database to `roads_pgr`
